@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ImgPage from '../ImgPage';
+
+import CheckBox from './components/CheckBox';
+import Btn from './components/Btn';
+import ImgWrap from './components/ImgWrap';
+import { useCallback } from 'react';
 
 const Main = styled.div`
     width: 100vw;
@@ -12,72 +16,32 @@ const Main = styled.div`
 `;
 const MainWrapper = styled.div``;
 
-const CheckBoxEnableWrapper = styled.div``;
-const CheckBoxRefreshWrapper = styled.div`
-    margin-top: 20px;
-`;
-const CheckBox = styled.input`
-    margin-right: 5px;
-`;
-const Label = styled.label``;
-
-const BtnWrapper = styled.div`
-    width: 500px;
-    height: 30px;
-`;
-const Btn = styled.button`
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
-`;
-
-const ImageWrapper = styled.div`
-    margin-top: 40px;
-    width: 500px;
-    height: 500px;
-`;
-
-const MainPage = ({catRequested}) => {
+const MainPage = () => {
 
     const [isEnabled, setIsEnabled] = useState(false);
     const [isRandom, setIsRandom] = useState(false);
     const [changeCat, setChangeCat] = useState(false);
 
-    const isEnabledHandler = (e) => {
+    const isEnabledHandler = useCallback((e) => {
         e.target.checked?setIsEnabled(true):setIsEnabled(false);
-    }
-    const isSetRandomHandler = (e) => {
+    }, [])
+    const isSetRandomHandler = useCallback((e) => {
         e.target.checked?setIsRandom(true):setIsRandom(false);
-    }
+    }, [])
 
-    const btnHandler = () => {
+    const btnHandler = useCallback(() => {
         if (isEnabled) {
             setChangeCat(!changeCat);
         }
-    }
+    }, [changeCat, isEnabled])
     
     return (
         <Main>
             <MainWrapper>
-                <CheckBoxEnableWrapper>
-                    <CheckBox onChange={isEnabledHandler} type="checkbox" id="enabled-checkbox"/>
-                    <Label htmlFor="enabled-checkbox">Enabled</Label>
-                </CheckBoxEnableWrapper>
-                <CheckBoxRefreshWrapper>
-                    <CheckBox onChange={isSetRandomHandler} type="checkbox" id="refresh-checkbox"/>
-                    <Label htmlFor="refresh-checkbox">Auto-refresh every 5 second</Label>
-                </CheckBoxRefreshWrapper>
-                <BtnWrapper>
-                    <Btn onClick={() => btnHandler()}>Get cat</Btn>
-                </BtnWrapper>
-                {
-                    isEnabled?
-                            <ImageWrapper>
-                                <ImgPage isEnabled={isEnabled} isRandom={isRandom} changeCat={changeCat}/>
-                            </ImageWrapper>
-                        :
-                            <></>
-                }
+                <CheckBox onChangeHandler={isEnabledHandler} id="enabled-checkbox" text="Enabled"/>
+                <CheckBox onChangeHandler={isSetRandomHandler} id="refresh-checkbox" text="Auto-refresh every 5 second" mt="20px"/>
+                <Btn btnHandler={btnHandler} text="Get cat"/>
+                { isEnabled?<ImgWrap isEnabled={isEnabled} isRandom={isRandom} changeCat={changeCat}/> : <></> }
             </MainWrapper>
         </Main>
     );

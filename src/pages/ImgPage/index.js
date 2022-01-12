@@ -1,2 +1,1 @@
-import ImgPage from "./ImgPage";
-export default ImgPage;
+export {default} from './ImgPage';

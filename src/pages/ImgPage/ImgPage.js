@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, memo} from 'react';
 import styled from 'styled-components';
 import CatService from '../../services/catService';
 import Error from '../../components/Error';
@@ -12,7 +12,7 @@ const Image = styled.img`
     height: 100%;
 `;
 
-const ImgPage = ({isEnabled, isRandom, changeCat, catLoaded, catError, catRequested, loading, error, cat}) => {
+const ImgPage = ({isEnabled, isRandom, changeCat, /* redux props -> */catLoaded, catError, catRequested, loading, error, cat}) => {
 
     const callBackReqHandler = useCallback((service) => {
         catRequested();
@@ -68,4 +68,4 @@ const mapDispatchToProps = {
     catError,
     catRequested
 }
-export default connect(mapStateToProps,mapDispatchToProps)(ImgPage);
+export default connect(mapStateToProps,mapDispatchToProps)(memo(ImgPage));
